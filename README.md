@@ -102,7 +102,7 @@ Bu script ek olarak:
 pip install -r requirements.txt
 
 # Sonra derleyin
-pyinstaller --onefile --windowed --name YouTubeMusicPlayer youtube_music_player.py
+pyinstaller --onefile --windowed --name YouTubeMusicPlayer ytmusic.py
 ```
 
 **⚠️ Önemli Notlar:**
