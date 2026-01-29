@@ -110,6 +110,27 @@ pyinstaller --onefile --windowed --name YouTubeMusicPlayer ytmusic.py
 - Python 3.8+ gereklidir: https://www.python.org/downloads/
 - MPV Player gereklidir: https://mpv.io/installation/
 
+  🪟 Windows için MPV Kurulum Adımları
+Windows kullanıcıları için MPV'nin manuel olarak kurulması ve programa tanıtılması gerekir. Aşağıdaki adımları izleyin:
+
+1. Doğru Dosyayı İndirme
+[shinchiro builds](https://github.com/shinchiro/mpv-winbuild-cmake/releases) adresine gidin ve sisteminize uygun olan güncel sürümü seçin:
+
+Önerilen (Modern PC'ler): Adında v3 geçen dosyayı indirin (Örn: mpv-x86_64-v3-git-xxxx.7z). Bu sürüm modern işlemciler için optimize edilmiştir.
+
+Standart: Eğer bilgisayarınız eskiyse veya v3 hata verirse, içinde v3 yazmayan standart sürümü (mpv-x86_64-git-xxxx.7z) indirin.
+
+⚠️ Dikkat: * İçinde dev veya ffmpeg yazan dosyaları indirmeyin; bunlar geliştiriciler içindir veya oynatıcıyı içermez.
+
+i686 yazan dosyalar 32-bit sistemler içindir, modern 64-bit bilgisayarlarda performans düşüklüğüne neden olur.
+
+2. Kurulum ve Tanımlama
+İndirdiğiniz .7z arşivini bir klasöre çıkartın (7-Zip veya WinRAR gerekebilir).
+
+Yöntem A (Önerilen): Klasör içindeki mpv.exe dosyasını kopyalayıp bu projenin (YouTube Music Player) ana dizinine yapıştırın.
+
+Yöntem B (Sistem Geneli): Klasör içindeki mpv-install.bat dosyasına sağ tıklayıp "Yönetici Olarak Çalıştır" diyerek MPV'yi sisteme kaydedin.
+
 ## 📖 Kullanım Kılavuzu
 
 ### İlk Kullanım
