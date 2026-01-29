@@ -1,0 +1,123 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║         YouTube Music Player - Hızlı Başlangıç Kılavuzu          ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+🚀 HIZLI KURULUM - WINDOWS
+═══════════════════════════════════════════════════════════════════
+
+1. Python'u kurun (eğer yoksa):
+   → https://www.python.org/downloads/
+   ⚠️  "Add Python to PATH" seçeneğini işaretleyin!
+
+2. MPV Player'ı kurun:
+   → https://mpv.io/installation/
+   
+   Kolay yöntem (Scoop ile):
+   → scoop install mpv
+
+3. build_exe_simple.bat dosyasına çift tıklayın
+   → Script otomatik olarak:
+     ✓ Python paketlerini kurar
+     ✓ .exe dosyası oluşturur
+
+4. YouTubeMusicPlayer.exe'ye çift tıklayın!
+
+═══════════════════════════════════════════════════════════════════
+🐧 HIZLI KURULUM - LINUX/MAC
+═══════════════════════════════════════════════════════════════════
+
+# MPV'yi kurun
+sudo apt install mpv        # Ubuntu/Debian
+brew install mpv            # macOS
+
+# Python paketlerini kurun
+pip install -r requirements.txt
+
+# Çalıştırın
+python3 youtube_music_player.py
+
+═══════════════════════════════════════════════════════════════════
+🎵 İLK KULLANIM
+═══════════════════════════════════════════════════════════════════
+
+1. Uygulamayı açın
+
+2. YouTube'da bir playlist bulun
+   Örnek: https://www.youtube.com/playlist?list=PLxxxxxx
+
+3. Playlist URL'sini "Playlist Ekle" kutusuna yapıştırın
+
+4. "Yükle" butonuna tıklayın
+
+5. Şarkı listesinden bir şarkıya çift tıklayın veya "Çal" butonu
+
+6. Keyfini çıkarın! 🎶
+
+═══════════════════════════════════════════════════════════════════
+🎛️ KONTROLLER
+═══════════════════════════════════════════════════════════════════
+
+▶️  Çal/Duraklat      - Space (planlanıyor)
+⏮️  Önceki             - Shuffle modunda rastgele
+⏭️  Sonraki            - Shuffle modunda rastgele
+⏹️  Durdur             - Tamamen durdur
+🔀 Rastgele           - Shuffle modu aç/kapat
+🔊 Ses                - Slider ile ayarla
+📊 İlerleme           - Sürükleyerek atlayabilirsiniz
+
+═══════════════════════════════════════════════════════════════════
+❓ SORUN YAŞIYORSANIZ
+═══════════════════════════════════════════════════════════════════
+
+❌ "MPV bulunamadı" hatası:
+   → MPV'yi kurun: https://mpv.io/installation/
+   → mpv.exe'yi .exe ile aynı klasöre koyun
+   → veya PATH'e ekleyin
+
+❌ "Python bulunamadı" hatası:
+   → Python'u kurun ve "Add to PATH" seçin
+
+❌ Playlist yüklenmiyor:
+   → İnternet bağlantınızı kontrol edin
+   → URL'nin geçerli bir playlist olduğundan emin olun
+
+❌ Şarkı çalmıyor:
+   → MPV'nin düzgün kurulu olduğundan emin olun
+   → Log sekmesini kontrol edin
+
+═══════════════════════════════════════════════════════════════════
+📁 DOSYALAR
+═══════════════════════════════════════════════════════════════════
+
+youtube_music_player.py     - Ana program
+build_exe_simple.bat        - Windows için basit kurulum
+build_exe.bat              - Windows için tam otomatik kurulum
+requirements.txt           - Python gereksinimleri
+README.md                  - Detaylı dokümantasyon
+
+Oluşturulacak dosyalar:
+playlists.json            - Kayıtlı playlistler
+music_player_config.json  - Ayarlar (ses seviyesi vb.)
+
+═══════════════════════════════════════════════════════════════════
+🔗 BAĞLANTILAR
+═══════════════════════════════════════════════════════════════════
+
+GitHub:  https://github.com/Lifantel/ytmusic
+Lisans:  GPL-3.0
+Python:  https://www.python.org/downloads/
+MPV:     https://mpv.io/installation/
+
+═══════════════════════════════════════════════════════════════════
+💡 İPUÇLARI
+═══════════════════════════════════════════════════════════════════
+
+✓ Playlistleriniz otomatik kaydedilir
+✓ Ses seviyesi hatırlanır
+✓ Shuffle modunda rastgele şarkı çalar
+✓ Duraklattığınız yerde kalır, devam ettiğinizde kaldığı yerden başlar
+✓ Log sekmesinden tüm işlemleri takip edebilirsiniz
+
+═══════════════════════════════════════════════════════════════════
+
+🎵 İyi Dinlemeler! 🎵
