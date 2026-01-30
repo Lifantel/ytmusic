@@ -24,7 +24,14 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QTimer, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QPalette, QColor, QLinearGradient, QGradient
-import yt_dlp
+
+# yt-dlp için Güvenli Import
+# Eğer kütüphane yoksa uygulama çökmez, GUI açılır ve hata mesajı verir.
+try:
+    import yt_dlp
+    HAS_YT_DLP_LIB = True
+except ImportError:
+    HAS_YT_DLP_LIB = False
 
 
 # ==================== KONFİGÜRASYON ====================
@@ -103,21 +110,26 @@ class DependencyChecker(QThread):
         
         # MPV kontrolü
         if not shutil.which("mpv"):
-            missing.append("MPV")
+            missing.append("MPV (Sistem Paketi)")
         
-        # yt-dlp kontrolü
+        # yt-dlp binary kontrolü (CLI)
         if not shutil.which("yt-dlp"):
-            missing.append("yt-dlp")
+            # Sadece binary yoksa sorun değil, kütüphane varsa çalışabilir ama yine de uyaralım
+            # Ancak çoğu zaman ikisi beraber gelir.
+            pass
+
+        # yt-dlp kütüphane kontrolü (Import)
+        if not HAS_YT_DLP_LIB:
+            missing.append("yt-dlp (Python Modülü)")
         
         if missing:
             msg = f"Eksik bağımlılıklar: {', '.join(missing)}\n\n"
             msg += "Kurulum için:\n"
-            if "MPV" in missing:
+            if "MPV (Sistem Paketi)" in missing:
                 msg += "  - Ubuntu/Debian: sudo apt install mpv\n"
-                msg += "  - macOS: brew install mpv\n"
-            if "yt-dlp" in missing:
-                msg += "  - pip: pip install yt-dlp\n"
-                msg += "  - veya: sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp\n"
+            if "yt-dlp (Python Modülü)" in missing:
+                msg += "  - Terminalden: sudo apt install yt-dlp\n"
+                msg += "  - Veya: pip3 install yt-dlp --break-system-packages\n"
             self.finished.emit(False, msg)
         else:
             self.finished.emit(True, "Tüm bağımlılıklar mevcut!")
@@ -134,6 +146,10 @@ class PlaylistLoader(QThread):
         self.url = url
     
     def run(self):
+        if not HAS_YT_DLP_LIB:
+            self.error.emit("Kritik Hata: yt-dlp kütüphanesi yüklü değil! Lütfen 'pip3 install yt-dlp' komutunu çalıştırın.")
+            return
+
         try:
             self.progress.emit("Playlist bilgileri alınıyor...")
             

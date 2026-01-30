@@ -56,14 +56,14 @@ echo -e "${GREEN}✓${NC} Klasör yapısı oluşturuldu"
 
 # DEBIAN/control dosyası
 echo -e "${YELLOW}📝 control dosyası oluşturuluyor...${NC}"
+# Depends kısmına yt-dlp eklendi, böylece apt üzerinden kurulmaya çalışılır
 cat > "$BUILD_DIR/DEBIAN/control" <<EOF
 Package: $PACKAGE_NAME
 Version: $VERSION
 Section: sound
 Priority: optional
 Architecture: all
-Depends: python3 (>= 3.8), python3-pyqt6, python3-pip, mpv
-Recommends: yt-dlp
+Depends: python3 (>= 3.8), python3-pyqt6, mpv, yt-dlp, python3-pip
 Maintainer: $MAINTAINER_NAME <$MAINTAINER_EMAIL>
 Description: YouTube Playlist Music Player
  Modern GUI ile YouTube playlistlerini çalan müzik çalar.
@@ -87,30 +87,25 @@ set -e
 
 echo "YouTube Music Player kurulumu tamamlanıyor..."
 
-# Python bağımlılıklarını kur
-echo "Python bağımlılıkları kontrol ediliyor..."
-pip3 install yt-dlp --break-system-packages 2>/dev/null || pip3 install yt-dlp || true
-
 # Gerekli paketleri kontrol et
 missing=""
 if ! command -v mpv &> /dev/null; then
     missing="${missing}mpv "
 fi
 
-if ! command -v yt-dlp &> /dev/null && ! python3 -c "import yt_dlp" 2>/dev/null; then
-    missing="${missing}yt-dlp "
+# yt-dlp kontrolü: Önce apt ile kuruldu mu bak, yoksa pip ile dene
+if ! command -v yt-dlp &> /dev/null; then
+    echo "yt-dlp bulunamadı, pip ile kurulmaya çalışılıyor..."
+    pip3 install yt-dlp --break-system-packages 2>/dev/null || pip3 install yt-dlp || true
 fi
 
 if [ -n "$missing" ]; then
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo "⚠️  UYARI: Bazı bağımlılıklar eksik!"
+    echo "⚠️  UYARI: Bazı bağımlılıklar eksik olabilir!"
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "Eksik: $missing"
-    echo ""
-    echo "Kurulum için:"
-    [ -n "$(echo $missing | grep mpv)" ] && echo "  sudo apt install mpv"
-    [ -n "$(echo $missing | grep yt-dlp)" ] && echo "  pip3 install yt-dlp"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "Otomatik kurulum deneniyor..."
+    apt-get install -y $missing || true
 fi
 
 echo ""
@@ -151,6 +146,7 @@ chmod 755 "$BUILD_DIR/usr/share/$PACKAGE_NAME/ytmusic.py"
 echo -e "${GREEN}✓${NC} Python scripti kopyalandı"
 
 # Başlatıcı script
+# LOGLAMA EKLENDİ: Hata durumunda debug.log dosyasına yazar
 echo -e "${YELLOW}🚀 Başlatıcı script oluşturuluyor...${NC}"
 cat > "$BUILD_DIR/usr/bin/$PACKAGE_NAME" <<EOF
 #!/bin/bash
@@ -165,8 +161,10 @@ fi
 # Uygulamayı kullanıcı dizininden başlat (config dosyaları için)
 cd "\$USERDIR"
 
-# Python scriptini çalıştır
-exec python3 /usr/share/$PACKAGE_NAME/ytmusic.py "\$@"
+# Python scriptini çalıştır ve log tut
+# Hata oluşursa kullanıcının debug.log dosyasını inceleyebilmesi için
+echo "Başlatılıyor: \$(date)" > "\$USERDIR/debug.log"
+exec python3 /usr/share/$PACKAGE_NAME/ytmusic.py "\$@" >> "\$USERDIR/debug.log" 2>&1
 EOF
 chmod 755 "$BUILD_DIR/usr/bin/$PACKAGE_NAME"
 echo -e "${GREEN}✓${NC} Başlatıcı script oluşturuldu"
@@ -226,18 +224,8 @@ if [ $? -eq 0 ]; then
     echo "Test için:"
     echo "  $PACKAGE_NAME"
     echo ""
-    echo "Kaldırma için:"
-    echo "  sudo apt remove $PACKAGE_NAME"
-    echo ""
-    
-    # Paket bilgilerini göster
-    echo "Paket Bilgileri:"
-    dpkg-deb -I "$DEB_FILE" | head -n 15
-    echo ""
-    
-    # Paket içeriğini göster
-    echo "Paket İçeriği:"
-    dpkg-deb -c "$DEB_FILE" | head -n 20
+    echo "Eğer çalışmazsa logu kontrol edin:"
+    echo "  cat ~/.ytmusic-player/debug.log"
     echo ""
     
 else
