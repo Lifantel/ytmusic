@@ -1,0 +1,22 @@
+Source: ytmusic
+Section: unknown
+Priority: optional
+Maintainer: Lifantel <Lifantel@unknown>
+Rules-Requires-Root: no
+Build-Depends:
+ debhelper-compat (= 13),
+Standards-Version: 4.7.2
+Homepage: https://github.com/Lifantel/ytmusic
+#Vcs-Browser: https://salsa.debian.org/debian/ytmusic
+#Vcs-Git: https://salsa.debian.org/debian/ytmusic.git
+
+Package: ytmusic
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends}
+ yt-dlp,
+ mpv,
+ python3-pyqt6
+Description: Modern music player
+ Modern, hareketli GUI'ye sahip YouTube playlist müzik çalar uygulaması.
